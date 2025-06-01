@@ -1,0 +1,196 @@
+﻿@model StyleZX.Models.ViewModel.AdminSearchViewModel
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Tìm kiếm tổng hợp";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .search-result-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 30px 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+
+    .search-header {
+        margin-bottom: 20px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 22px;
+        font-weight: 600;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    h3.section-title {
+        font-family: 'Montserrat', sans-serif;
+        color: #34495e;
+        margin-top: 30px;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #e53935;
+        padding-bottom: 5px;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        transition: box-shadow 0.3s ease;
+    }
+
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+    .card-title {
+        font-weight: 600;
+        color: #e53935;
+        margin-bottom: 10px;
+    }
+
+    .card-row {
+        margin-bottom: 8px;
+    }
+
+    .no-results {
+        text-align: center;
+        font-size: 16px;
+        color: #888;
+        margin-top: 50px;
+    }
+
+    .pagination-container {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding-left: 0;
+        gap: 5px;
+    }
+
+        .pagination li {
+            display: inline;
+        }
+
+            .pagination li a,
+            .pagination li span {
+                color: #007bff;
+                padding: 6px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                text-decoration: none;
+            }
+
+                .pagination li a:hover {
+                    background-color: #e9ecef;
+                    border-color: #ccc;
+                }
+
+        .pagination .active span {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+</style>
+
+<div class="search-result-container">
+    <h2 class="search-header">Kết quả tìm kiếm: "@Model.Keyword"</h2>
+
+    @if (!Model.Users.Any() && !Model.Categories.Any() && !Model.Products.Any() && !Model.Orders.Any())
+    {
+        <p class="no-results">Không tìm thấy kết quả nào cho từ khóa <strong>@Model.Keyword</strong>.</p>
+    }
+    else
+    {
+        @* Users *@
+        if (Model.Users.Any())
+        {
+            <h3 class="section-title">Người dùng</h3>
+            <div class="card-grid">
+                @foreach (var user in Model.Users)
+                {
+                    <div class="card">
+                        <div class="card-title">@user.UserName</div>
+                        <div class="card-row"><strong>Họ và tên:</strong> @user.FullName</div>
+                        <div class="card-row"><strong>Email:</strong> @user.Email</div>
+                        <div class="card-row"><strong>Số điện thoại:</strong> @user.PhoneNumber</div>
+                    </div>
+                }
+            </div>
+            <div class="pagination-container">
+                @Html.PagedListPager(Model.Users, page => Url.Action("SearchAll", new { keyword = Model.Keyword, userPage = page, categoryPage = 1, productPage = 1, orderPage = 1 }))
+            </div>
+        }
+
+        @* Categories
+            if (Model.Categories.Any())
+            {
+                <h3 class="section-title">Danh mục</h3>
+                <div class="card-grid">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <div class="card">
+                            <div class="card-title">@category.Name</div>
+                            <div class="card-row">@category.Description</div>
+                        </div>
+                    }
+                </div>
+                <div class="pagination-container">
+                    @Html.PagedListPager(Model.Categories, page => Url.Action("SearchAll", new { keyword = Model.Keyword, userPage = 1, categoryPage = page, productPage = 1, orderPage = 1 }))
+                </div>
+            }
+        *@
+        @* Products *@
+        if (Model.Products.Any())
+        {
+            <h3 class="section-title">Sản phẩm</h3>
+            <div class="card-grid">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="card">
+                        <div class="card-title">@product.Name</div>
+                        <div class="card-row">@product.Description</div>
+                        <div class="card-row" style="color:#e53935; font-weight: 700;">@String.Format("{0:N0} đ", product.Price)</div>
+                    </div>
+                }
+            </div>
+            <div class="pagination-container">
+                @Html.PagedListPager(Model.Products, page => Url.Action("SearchAll", new { keyword = Model.Keyword, userPage = 1, categoryPage = 1, productPage = page, orderPage = 1 }))
+            </div>
+        }
+
+        @* Orders *@
+        if (Model.Orders.Any())
+        {
+            <h3 class="section-title">Đơn hàng</h3>
+            <div class="card-grid">
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="card">
+                        <div class="card-title">Mã đơn: @order.OrderId</div>
+                        <div class="card-row"><strong>Người đặt:</strong> @order.User?.UserName</div>
+                        <div class="card-row"><strong>Ngày đặt:</strong> @order.OrderDate.ToString("dd/MM/yyyy HH:mm")</div>
+                        <div class="card-row"><strong>Trạng thái:</strong> @order.Status</div>
+                        <div class="card-row" style="color:#e53935; font-weight: 700;">Tổng tiền: @String.Format("{0:N0} đ", order.TotalAmount)</div>
+                    </div>
+                }
+            </div>
+            <div class="pagination-container">
+                @Html.PagedListPager(Model.Orders, page => Url.Action("SearchAll", new { keyword = Model.Keyword, userPage = 1, categoryPage = 1, productPage = 1, orderPage = page }))
+            </div>
+        }
+    }
+</div>

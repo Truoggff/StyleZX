@@ -1,0 +1,164 @@
+﻿@model PagedList.IPagedList<StyleZX.Models.ProductVariant>
+@using PagedList.Mvc;
+@using StyleZX.Models
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Danh sách biến thể sản phẩm";
+}
+
+<style>
+    .manage-product-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 1200px;
+        padding: 10px;
+        padding-top: 0px;
+        align-items: center;
+    }
+
+    .tieude-ds {
+        margin-top: 0px;
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        padding-top: 0px;
+    }
+
+    .table thead th {
+        text-align: center;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding-left: 0;
+        gap: 5px;
+    }
+
+        .pagination li {
+            display: inline;
+        }
+
+            .pagination li a,
+            .pagination li span {
+                color: #007bff;
+                padding: 6px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                text-decoration: none;
+            }
+
+                .pagination li a:hover {
+                    background-color: #e9ecef;
+                    border-color: #ccc;
+                }
+
+        .pagination .active span {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    .filter-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="manage-product-container">
+    <nav class="tieude-ds">DANH SÁCH BIẾN THỂ SẢN PHẨM</nav>
+
+    <div style="text-align: left; width: 100%;">
+        <form method="get" asp-action="ProductVariants" style="margin-left: 0px;">
+            <div class="filter-container">
+                <nav style="font-size:18px">Lọc biến thể</nav>
+                <div style="width: 180px;">
+                    @Html.DropDownList("productId", (SelectList)ViewBag.Products, "Tất cả sản phẩm", new
+                    {
+                        @class = "form-control",
+                        onchange = "this.form.submit();"
+                    })
+                </div>
+                <div style="width: 150px;">
+                    @Html.DropDownList("colorId", (SelectList)ViewBag.Colors, "Tất cả màu", new
+                    {
+                        @class = "form-control",
+                        onchange = "this.form.submit();"
+                    })
+                </div>
+                <div style="width: 150px;">
+                    @Html.DropDownList("sizeId", (SelectList)ViewBag.Sizes, "Tất cả size", new
+                    {
+                        @class = "form-control",
+                        onchange = "this.form.submit();"
+                    })
+                </div>
+                <div style="width: 250px;">
+                    @Html.TextBox("searchString", ViewBag.SearchString as string, new
+                    {
+                        @class = "form-control",
+                        placeholder = "Tìm kiếm...",
+                        onchange = "this.form.submit();"
+                    })
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr style="background-color: burlywood">
+                <th>ID</th>
+                <th>Sản Phẩm</th>
+                <th>Màu Sắc</th>
+                <th>Kích Thước</th>
+                <th>Số Lượng</th>
+                <th colspan="3">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductVariantId</td>
+                    <td>@item.Product.Name</td>
+                    <td>@item.ProductColor.ColorName</td>
+                    <td>@item.ProductSize.NameSize</td>
+                    <td>@item.Quantity</td>
+
+                    <td style="width: 20px">
+                        <a href="@Url.Action("Details", "ProductVariant", new { id = item.ProductVariantId })" style="color:burlywood" class="btn-detail" title="Xem"><i class="fas fa-eye"></i></a>
+                    </td>
+                    <td style="width: 20px">
+                        <a href="@Url.Action("Edit", "ProductVariant", new { id = item.ProductVariantId })" style="color: #198754" class="btn-edit" title="Sửa"><i class="fas fa-edit"></i></a>
+                    </td>
+                    <td style="width: 20px">
+                        <a href="@Url.Action("Delete", "ProductVariant", new { id = item.ProductVariantId })" style="color: red" class="btn-delete" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    @if (Model.PageCount != 0 && Model.PageCount > 1)
+    {
+        <div class="text-center">
+            @Html.PagedListPager(Model, page => Url.Action("ProductVariants", new
+            {
+                page,
+                productId = Request.QueryString["productId"],
+                colorId = Request.QueryString["colorId"],
+                sizeId = Request.QueryString["sizeId"],
+                searchString = Request.QueryString["searchString"]
+            }))
+        </div>
+    }
+</div>

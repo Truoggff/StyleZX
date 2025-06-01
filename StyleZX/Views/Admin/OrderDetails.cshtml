@@ -1,0 +1,328 @@
+﻿@model StyleZX.Models.Order
+
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .tieude-ds {
+        margin-top: 0px;
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        padding-top: 0px;
+        text-align: center;
+    }
+    /* Container styling */
+    .container-fluid {
+        padding: 10px;
+        max-width: 1400px;
+        margin-top: 0;
+    }
+
+    /* Header styling */
+    .page-title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 500;
+        color: #2c3e50;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f1f1;
+        margin-bottom: 20px;
+    }
+
+    /* Card styling */
+    .compact-card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 0;
+    }
+
+    .card-header-custom {
+        background-color: aqua;
+        padding: 5px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+    .compact-card .card-body {
+        padding: 12px 15px;
+    }
+
+    /* Definition list styling */
+    .compact-card dl.row {
+        margin-bottom: 0;
+    }
+
+    .compact-card dt.col-sm-4 {
+        font-weight: 500;
+        color: #7f8c8d;
+        padding: 5px 0;
+        font-size: 0.9rem;
+    }
+
+    .compact-card dd.col-sm-8 {
+        padding: 5px 0;
+        color: #2c3e50;
+        font-weight: 400;
+        font-size: 0.9rem;
+    }
+
+    /* Badge styling */
+    .badge {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-radius: 4px;
+    }
+
+    .badge-warning {
+        background-color: #f39c12;
+    }
+
+    .badge-info {
+        background-color: #3498db;
+    }
+
+    .badge-primary {
+        background-color: #2980b9;
+    }
+
+    .badge-success {
+        background-color: #27ae60;
+    }
+
+    .badge-danger {
+        background-color: #e74c3c;
+    }
+
+    /* Table styling */
+    .table-responsive {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table {
+        font-size: 0.95rem;
+        margin-bottom: 0;
+    }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+            padding: 12px 15px;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            border-top: 1px solid #f1f1f1;
+        }
+
+        .table tfoot td {
+            font-weight: 600;
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+        }
+
+    /* Button styling */
+    .btn {
+        padding: 7px 16px;
+        border-radius: 4px;
+        font-weight: 500;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #3498db;
+    }
+
+    .btn-secondary {
+        background-color: #95a5a6;
+    }
+
+    /* Form styling */
+    .status-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .form-control {
+        height: 38px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    /* Utility classes */
+    .text-danger {
+        color: #e74c3c !important;
+    }
+
+    .font-weight-bold {
+        font-weight: 600;
+    }
+
+    .mb-0 {
+        margin-bottom: 0 !important;
+    }
+
+    .white-space-nowrap {
+        white-space: nowrap;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .status-form {
+            flex-direction: column;
+        }
+
+        .compact-card .card-body {
+            padding: 10px;
+        }
+    }
+    .btn-secondary:hover{
+        background-color:chartreuse;
+    }
+</style>
+<div class="container-fluid">
+    <p class="tieude-ds">CHI TIẾT ĐƠN HÀNG</p>
+    <div class="row mb-3" style="">
+        <!-- Thông tin khách hàng -->
+        <div class="col-md-6">
+            <div class="compact-card shadow-sm">
+                <p class="card-header-custom" style="text-align: center; font-size: 18px;">Thông tin khách hàng</p>
+                <div class="card-body">
+                    <dl class="row" style="margin-left: 5px;">
+                        <dt class="col-sm-4" style="font-weight: bold; color: black">Họ Tên</dt>
+                        <dd class="col-sm-8">@Model.User.FullName</dd>
+                        <dt class="col-sm-4" style="font-weight: bold; color: black">Điện Thoại</dt>
+                        <dd class="col-sm-8">@Model.User.PhoneNumber</dd>
+                        <dt class="col-sm-4" style="font-weight: bold; color: black">Email</dt>
+                        <dd class="col-sm-8">@Model.User.Email</dd>
+                        <dt class="col-sm-4" style="font-weight: bold; color: black">Địa Chỉ Giao</dt>
+                        <dd class="col-sm-8">@Model.ShippingAddress</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông tin đơn hàng -->
+        <div class="col-md-6">
+            <div class="compact-card shadow-sm">
+                <p class="card-header-custom" style="text-align: center; font-size: 18px;">Thông tin đơn hàng - @Model.OrderId</p>
+                <div class="card-body">
+                    <dl class="row" style="margin-left: 5px;">
+                        <dt class="col-sm-4" style="font-weight: bold; color: black">Ngày Đặt</dt>
+                        <dd class="col-sm-8">@Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</dd>
+                        <dt class="col-sm-4" style="font-weight: bold; color: black">Thanh Toán</dt>
+                        <dd class="col-sm-8">@Model.PaymentMethod</dd>
+                        <dt class="col-sm-4"style="font-weight: bold; color: black">Trạng Thái</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge
+                                @(Model.Status == "Chờ xác nhận" ? "badge-warning" :
+                                  Model.Status == "Đang xử lý" ? "badge-info" :
+                                  Model.Status == "Đang giao" ? "badge-primary" :
+                                  Model.Status == "Đã giao" ? "badge-success" : "badge-danger")">
+                                @Model.Status
+                            </span>
+                        </dd>
+                        <dt class="col-sm-4"style="font-weight: bold; color: black">Tổng tiền:</dt>
+                        <dd class="col-sm-8 font-weight-bold text-danger">@Model.TotalAmount.ToString("N0") đ</dd>
+                        <dd class="col-sm-4"></dd>
+                        <dd class="col-sm-8"></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Danh sách sản phẩm -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0" style=" text-align: center;">Danh sách sản phẩm</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th width="5%">STT</th>
+                                    <th width="30%">Sản Phẩm</th>
+                                    <th width="15%">Màu Sắc</th>
+                                    <th width="15%">Kích Thước</th>
+                                    <th width="15%">Đơn Giá</th>
+                                    <th width="10%">SL</th>
+                                    <th width="20%">Thành Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int counter = 1;
+                                    foreach (var item in Model.OrderDetails)
+                                    {
+                                        <tr>
+                                            <td>@(counter++)</td>
+                                            <td>@item.ProductVariant.Product.Name</td>
+                                            <td>@item.ProductVariant.ProductColor.ColorName</td>
+                                            <td>@item.ProductVariant.ProductSize.NameSize</td>
+                                            <td>@item.Price.ToString("N0") đ</td>
+                                            <td>@item.Quantity</td>
+                                            <td>@((item.Price * item.Quantity).ToString("N0")) đ</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            <tfoot class="bg-light">
+                                <tr>
+                                    <td colspan="6" class="text-right font-weight-bold">Tổng cộng:</td>
+                                    <td class="font-weight-bold text-danger">@Model.TotalAmount.ToString("N0") đ</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form cập nhật trạng thái -->
+    <div style=" display: flex; padding: 40px; align-items: center; justify-content: center">
+        @using (Html.BeginForm("UpdateOrderStatus", "Admin", FormMethod.Post, new { @class = "form-inline", style = "display: flex; align-items: center; gap: 10px;" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("orderId", Model.OrderId)
+
+            <label for="status">Cập nhật trạng thái</label>
+            <select name="status" class="form-control" style="width: 140px;">
+                <option value="Chờ xác nhận" @(Model.Status == "Chờ xác nhận" ? "selected" : "")>Chờ xác nhận</option>
+                <option value="Đang xử lý" @(Model.Status == "Đang xử lý" ? "selected" : "")>Đang xử lý</option>
+                <option value="Đang giao" @(Model.Status == "Đang giao" ? "selected" : "")>Đang giao</option>
+                <option value="Đã giao" @(Model.Status == "Đã giao" ? "selected" : "")>Đã giao</option>
+                <option value="Hủy đơn" @(Model.Status == "Hủy đơn" ? "selected" : "")>Hủy đơn</option>
+            </select>
+            <button type="submit" class="btn btn-primary white-space-nowrap">
+                <i class="fas fa-save"></i> Cập nhật
+            </button>
+            @Html.ActionLink("Quay lại danh sách", "OrderManagement", null, new { @class = "btn btn-secondary" })
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000);
+        });
+    </script>
+}

@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Hướng dẫn chọn size";
+}
+<style>
+    .size-guide-container {
+        max-width: 900px;
+        margin: 40px auto;
+        margin-top: 10px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .size-guide-title {
+        text-align: center;
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 30px;
+        font-weight: bold;
+
+        margin-top: 5px;
+        margin-left: 80px;
+        font-size: 20px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .size-section {
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .size-section img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom: 10px;
+    }
+
+    .size-section p {
+        font-size: 25px;
+        color: #555;
+        font-weight: 600;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Responsive */
+    @@media (max-width: 600px) {
+        .size-guide-title {
+            font-size: 22px;
+        }
+
+        .size-section p {
+            font-size: 16px;
+        }
+    }
+</style>
+
+<div class="size-guide-container">
+    <p class="size-guide-title">Hướng Dẫn Chọn Size</p>
+
+    <div class="size-section">
+        <img src="~/Images/chonsize1.jpg" alt="Bảng size áo" />
+        <p>Bảng size áo</p>
+        <hr />
+    </div>
+
+    <div class="size-section">
+        <img src="~/Images/chonsize2.jpg" alt="Bảng size quần" />
+        <p>Bảng size quần</p>
+        <hr />
+    </div>
+
+    <div class="size-section">
+        <img src="~/Images/chonsize3.jpg" alt="Bảng size giày" />
+        <p>Bảng size giày</p>
+    </div>
+</div>

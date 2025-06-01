@@ -1,0 +1,238 @@
+﻿@model StyleZX.Models.ViewModel.CheckoutViewModel
+
+@{
+    ViewBag.Title = "Thanh Toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .checkout-container {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid red;
+    }
+    .btn-continue {
+        background-color: coral;
+    }
+
+        .btn-continue:hover {
+            background-color:lawngreen;
+        }
+    .checkout-body {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr;
+        gap: 30px;
+    }
+
+    .customer-info {
+        background-color:floralwhite;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid #eee;
+    }
+
+    .order-summary {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 6px;
+        border: 1px solid #eee;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            font-weight: 600;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #fff;
+    }
+
+    .product-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .product-table th {
+            background-color:chartreuse;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .product-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+    .product-image {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .total-amount {
+        font-size: 1.2em;
+        margin-top: 20px;
+        text-align: right;
+        padding: 15px 0;
+        border-top: 2px solid red;
+    }
+
+    .btn-submit {
+        background-color: #28a745;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 4px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+
+    .section-title {
+        font-size: 1.3em;
+        margin-bottom: 20px;
+        color: #333;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    @@media (max-width: 768px) {
+        .checkout-body {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h2 style="font-weight: 600;font-family: 'Montserrat', sans-serif; font-size: 20px; ">THÔNG TIN ĐƠN HÀNG</h2>
+    </div>
+
+    @using (Html.BeginForm("CheckOut", "Order", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="checkout-body">
+            <!-- Cột thông tin khách hàng -->
+            <div class="customer-info">
+                <h3 class="section-title" style="font-weight: 500; font-size: 18px; font-family: 'Montserrat', sans-serif;">Thông Tin Khách Hàng</h3>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FullName)
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PhoneNumber)
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ShippingAddress)
+                    @Html.TextBoxFor(m => m.ShippingAddress, new { @class = "form-control", required = "required" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PaymentMethod)
+                    @Html.DropDownListFor(m => m.PaymentMethod, new SelectList(new[] {
+                        "Thanh toán khi nhận hàng",
+                        "Chuyển khoản ngân hàng"
+                    }), new { @class = "form-control", required = "required" })
+                </div>
+                <div>
+                    <a href="@Url.Action("ListCart", "Cart")" class="btn btn-continue">
+                        <i class="fas fa-arrow-left"></i> Giỏ Hàng
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cột đơn hàng -->
+            <div class="order-summary">
+                <h3 class="section-title" style="font-weight: 500; font-size: 18px; font-family: 'Montserrat', sans-serif;">Đơn Hàng Của Bạn</h3>
+
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Ảnh</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Màu/Size</th>
+                            <th>SL</th>
+                            <th>Thành Tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CartItems)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="~/Images/@item.ImageUrl" class="product-image" alt="@item.ProductName" />
+                                </td>
+                                <td>@item.ProductName</td>
+                                <td>
+                                    <span class=" bg-light text-dark" style="font-size: 15px">@item.Color</span><br>
+                                    <span class=" bg-light text-dark" style="font-size: 15px">@item.Size</span>
+                                </td>
+                                <td>@item.Quantity</td>
+                                <td>
+                                    @if (item.Price != null && item.Quantity != null)
+                                    {
+                                        @((item.Price * item.Quantity).ToString("N0")) @:₫
+                                    }
+                                    else
+                                    {
+                                        @:0 ₫
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="total-amount">
+                    <strong>Tổng Tiền: @Model.TotalAmount.ToString("N0") ₫</strong>
+                </div>
+
+                <button type="submit" class="btn-submit" onclick = "return confirm('Bạn có chắc chắn muốn đặt hàng?');">
+                    <i class="fas fa-check-circle"></i> Xác nhận đặt hàng
+                </button>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,135 @@
+﻿@model StyleZX.Models.ViewModel.ReportViewModel
+@{
+    ViewBag.Title = "Báo cáo thống kê";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section styles {
+    <style>
+        .report-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .report-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #ccc;
+            padding-bottom: 10px;
+        }
+
+        .section-block {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 20px;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .table-report {
+            width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+            .table-report thead {
+                background-color: #f5f7fa;
+            }
+
+            .table-report th,
+            .table-report td {
+                padding: 12px 15px;
+                text-align: center;
+                border-bottom: 1px solid #eee;
+                font-size: 14px;
+            }
+
+            .table-report thead th {
+                font-weight: 600;
+                color: #2c3e50;
+                text-transform: uppercase;
+                font-size: 13px;
+            }
+
+            .table-report tbody tr:hover {
+                background-color: #f1f1f1;
+            }
+
+            .table-report tfoot td {
+                font-weight: 600;
+                background-color: #f8f9fa;
+            }
+
+        .highlight {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+}
+
+<div class="report-container">
+    <h2 class="report-title">BÁO CÁO THỐNG KÊ - NĂM @Model.Year</h2>
+
+    <!-- Doanh thu theo tháng -->
+    <div class="section-block">
+        <div class="section-title">1. Doanh thu theo tháng</div>
+        <table class="table-report">
+            <thead>
+                <tr>
+                    <th>Tháng</th>
+                    <th>Số đơn hàng</th>
+                    <th>Tổng doanh thu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.MonthlyRevenue.OrderBy(m => m.Month))
+                {
+                    <tr>
+                        <td>Tháng @item.Month</td>
+                        <td>@item.OrderCount</td>
+                        <td class="highlight">@item.TotalRevenue.ToString("N0") đ</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sản phẩm bán chạy -->
+    <div class="section-block">
+        <div class="section-title">2. Top sản phẩm bán chạy nhất</div>
+        <table class="table-report">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng bán</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int index = 1;
+                    foreach (var product in Model.TopSellingProducts)
+                    {
+                        <tr>
+                            <td>@(index++)</td>
+                            <td>@product.ProductName</td>
+                            <td class="highlight">@product.QuantitySold</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,192 @@
+﻿@using StyleZX.Models.ViewModel
+
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+}
+<style>
+    .infor {
+        display: flex;
+        padding: 5px;
+        margin: 5px;
+        background-color:aliceblue;
+    }
+
+    .text-center {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: bold;
+    }
+
+    .profile-container {
+        width: 600px;
+        height: 600px;
+        margin-left: 5px;
+        padding: 20px;
+        background-color: antiquewhite;
+        border-radius: 10px;
+        font-family: 'Montserrat', sans-serif;
+        text-align: left;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .infor-order {
+        flex-grow: 1;
+        margin-left: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        border: 2px solid brown;
+    }
+
+    .form-group lable {
+        font-weight: bold;
+    }
+
+    .form-group {
+        font-size: 14px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 8px 20px;
+        margin: 5px;
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    .infor-order {
+        align-items: center;
+    }
+</style>
+
+<div class="infor">
+    <div class="profile-container">
+        <p class="text-center">Thông Tin Tài Khoản</p>
+        <div class="form-group">
+            <label><strong>Tên tài khoản:</strong></label>
+            <p>@ViewBag.UserName</p>
+        </div>
+        <div class="form-group">
+            <label><strong>Mật khẩu:</strong></label>
+            <p>@ViewBag.Password</p>
+        </div>
+        <div class="form-group">
+            <label><strong>Họ tên:</strong></label>
+            <p>@ViewBag.FullName</p>
+        </div>
+        <div class="form-group">
+            <label><strong>Email:</strong></label>
+            <p>@ViewBag.Email</p>
+        </div>
+        <div class="form-group">
+            <label><strong>Số điện thoại:</strong></label>
+            <p>@ViewBag.PhoneNumber</p>
+        </div>
+        <div class="form-group">
+            <label><strong>Địa chỉ:</strong></label>
+            <p>@ViewBag.Address</p>
+        </div>
+        <div class="form-group">
+            <label><strong>Vai trò:</strong></label>
+            <p>@ViewBag.Role</p>
+        </div>
+        <div class="form-group">
+            <label><strong>Ngày tạo tài khoản:</strong></label>
+            <p>@ViewBag.CreatedAt</p>
+        </div>
+
+        <div class="text-center" style="margin-top: 10px;">
+            <a href="@Url.Action("EditProfile", "Account")" class="btn btn-primary">Chỉnh sửa thông tin</a>
+            <a href="@Url.Action("Logout", "Account")" class="btn btn-danger">Đăng xuất</a>
+        </div>
+    </div>
+    <div class="infor-order">
+        <p class="text-center">Danh Sách Đơn Hàng</p>
+
+        @if (ViewBag.Orders != null && ((List<OrderViewModel>)ViewBag.Orders).Count > 0)
+        {
+            foreach (var order in (List<OrderViewModel>)ViewBag.Orders)
+            {
+                <div style="margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; border-radius: 5px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <div>
+                            <strong>Mã đơn hàng:</strong> @order.OrderId<br />
+                            <br />
+                            <strong>Thanh toán:</strong> @order.PaymentMethod
+                        </div>
+                        <div>
+                            <strong style="margin-bottom:20px">Ngày đặt:</strong> @order.OrderDate.ToString("dd/MM/yyyy HH:mm")<br />
+                            <br />
+                            <strong>Trạng thái:</strong> @order.Status
+                        </div>
+                    </div>
+
+                    <table class="table" style="width: 100%; border-collapse: collapse; border: 1px solid #ddd; ">
+                        <thead>
+                            <tr style="background-color: #f2f2f2;">
+                                <th style="padding: 10px; ">Sản phẩm</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Đơn giá</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Số lượng</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detail in order.OrderDetails)
+                            {
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">@detail.ProductName</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">@detail.Price.ToString("N0") đ</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">@detail.Quantity</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">@detail.Total.ToString("N0") đ</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <td colspan="3">
+                                    <strong>Tổng tiền:</strong>
+                                </td>
+                                <td style="text-align: center">
+                                    @order.TotalAmount.ToString("N0") đ
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr style="width: 80%; margin: 20px auto; border: 0.5px solid black;" />
+
+            }
+        }
+        else
+        {
+            <p style="text-align: center; margin-top: 20px;">Bạn chưa có đơn hàng nào</p>
+        }
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["SuccessMessage"])");
+    </script>
+}

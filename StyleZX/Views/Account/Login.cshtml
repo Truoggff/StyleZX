@@ -1,0 +1,167 @@
+﻿@model StyleZX.Controllers.AccountController.LoginViewModel
+
+
+@{
+    ViewBag.Title = "Login";
+}
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        padding: 40px 0;
+        background-color: #f5f5f5;
+    }
+
+    .login-form {
+        background: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        width: 500px;
+    }
+
+    .login-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .login-header {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .login-header h2 {
+        color: #333;
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .login-label {
+        padding: 12px 10px;
+        text-align: left;
+        width: 40%;
+        font-weight: bold;
+        color: #555;
+    }
+
+    .login-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .login-button-cell {
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .login-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 10px 0;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 100%;
+        transition: background-color 0.3s;
+    }
+
+    .login-button:hover {
+        background-color: #45a049;
+    }
+
+    .login-links {
+        text-align: center;
+        padding-top: 15px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .login-links a {
+        color: #4CAF50;
+        text-decoration: none;
+    }
+
+    .login-links a:hover {
+        text-decoration: underline;
+    }
+
+    .error-message {
+        color: #e74c3c;
+        font-size: 12px;
+        display: block;
+        margin-top: 5px;
+    }
+</style>
+<div class="login-container">
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login-form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <table class="login-table">
+            <tr>
+                <td colspan="2" class="login-header">
+                    <h2>ĐĂNG NHẬP</h2>
+                </td>
+            </tr>
+            <tr>
+                <td class="login-label">
+                    @Html.LabelFor(m => m.Username, "Tên đăng nhập")
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Username, new { @class = "login-input", placeholder = "Nhập tên đăng nhập" })
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "error-message" })
+                </td>
+            </tr>
+            <tr>
+                <td class="login-label">
+                    @Html.LabelFor(m => m.Password, "Mật khẩu")
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Password, new { @class = "login-input", placeholder = "Nhập mật khẩu" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error-message" })
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="login-button-cell">
+                    <button type="submit" class="login-button">ĐĂNG NHẬP</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="login-links">
+                    @Html.ActionLink("Quên mật khẩu?", "ForgotPassword", "Account") |
+                    @Html.ActionLink("Đăng ký tài khoản", "Register", "Account")
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+@if (ViewBag.Message != null)
+{
+    <script>
+        alert("@Html.Raw(ViewBag.Message)");
+    </script>
+
+}
+@if (TempData["Message"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["Message"])");
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        alert("@Html.Raw(TempData["ErrorMessage"])");
+    </script>
+}
+
+

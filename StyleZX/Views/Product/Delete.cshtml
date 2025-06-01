@@ -1,0 +1,148 @@
+﻿@model StyleZX.Models.Product
+
+@{
+    ViewBag.Title = "Xóa Sản Phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .text-center {
+        margin-top: 0px;
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .detail-container {
+        max-width: 1200px;
+        margin: 10px auto;
+        padding: 20px;
+        background-color: #ffe6e6;
+        border-radius: 10px;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+
+    .action-links {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 8px 20px;
+        margin: 0 5px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    .btn-default {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+        .btn-default:hover {
+            background-color: #5a6268;
+        }
+
+    .product-image {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+        .product-image img {
+            width: 300px;
+            border-radius: 15px;
+        }
+</style>
+
+<div class="detail-container">
+    <p class="text-center">Xóa Sản Phẩm</p>
+
+    <div style="display: flex; gap: 30px;">
+        <div style="flex: 1;">
+            <div class="form-group">
+                <label>Danh Mục</label>
+                <div class="form-control">@Model.Category.Name</div>
+            </div>
+
+            <div class="form-group">
+                <label>Tên Sản Phẩm</label>
+                <div class="form-control">@Model.Name</div>
+            </div>
+
+            <div class="form-group">
+                <label>Mô Tả</label>
+                <div class="form-control">@Model.Description</div>
+            </div>
+
+            <div class="form-group">
+                <label>Giá</label>
+                <div class="form-control">@Model.Price</div>
+            </div>
+
+            <div class="form-group">
+                <label>Ngày Tạo</label>
+                <div class="form-control">@Model.CreatedAt</div>
+            </div>
+
+            <div class="form-group">
+                <label>Ngày Cập Nhật</label>
+                <div class="form-control">@Model.UpdatedAt</div>
+            </div>
+        </div>
+
+        <div class="product-image" style="margin-top: 30px;">
+            @if (Model.ProductImages != null && Model.ProductImages.Any())
+            {
+                <img src="~/Images/@Model.ProductImages.First().ImageUrl" alt="@Model.ProductImages.First().AltText" />
+            }
+            else
+            {
+                <p>Không có ảnh sản phẩm</p>
+            }
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ProductId)
+
+        <div class="action-links">
+            <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm ảnh này?');" />
+            @Html.ActionLink("Quay lại danh sách", "Products", "Admin", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

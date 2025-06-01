@@ -1,0 +1,124 @@
+﻿@model StyleZX.Models.ProductVariant
+
+@{
+    ViewBag.Title = "Xóa Biến Thể Sản Phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .text-center {
+        margin-top: 0px;
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .detail-container {
+        max-width: 1200px;
+        margin: 10px auto;
+        padding: 20px;
+        background-color: #ffe6e6;
+        border-radius: 10px;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+    }
+
+    .action-links {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 8px 20px;
+        margin: 0 5px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    .btn-default {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+        .btn-default:hover {
+            background-color: #5a6268;
+        }
+
+    .confirmation-message {
+        color: #dc3545;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="detail-container">
+    <p class="text-center">Xóa Biến Thể Sản Phẩm</p>
+    <div style="display: flex; gap: 30px;">
+        <div style="flex: 1;">
+            <div class="form-group">
+                <label>Sản Phẩm</label>
+                <div class="form-control">@Model.Product.Name</div>
+            </div>
+
+            <div class="form-group">
+                <label>Màu Sắc</label>
+                <div class="form-control">@Model.ProductColor.ColorName</div>
+            </div>
+
+            <div class="form-group">
+                <label>Kích Thước</label>
+                <div class="form-control">@Model.ProductSize.NameSize</div>
+            </div>
+
+            <div class="form-group">
+                <label>Số Lượng</label>
+                <div class="form-control">@Model.Quantity</div>
+            </div>
+        </div>
+
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ProductVariantId)
+
+        <div class="action-links">
+            <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa biến thể này?');" />
+            @Html.ActionLink("Quay lại danh sách", "ProductVariants", "Admin", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

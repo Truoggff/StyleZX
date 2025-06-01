@@ -1,0 +1,219 @@
+﻿@model StyleZX.Models.ProductVariant
+
+@{
+    ViewBag.Title = "Thêm vào giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Sử dụng layout chung
+}
+
+<style>
+    .add-to-cart-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .product-info {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 20px;
+    }
+
+    .product-image {
+        flex: 1;
+        text-align: center;
+    }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+    .product-details {
+        flex: 2;
+    }
+
+    .product-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .product-price {
+        font-size: 20px;
+        font-weight: bold;
+        color: #d32f2f;
+        margin: 15px 0;
+    }
+
+    .option-group {
+        margin-bottom: 15px;
+    }
+
+    .option-label {
+        font-weight: 500;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+    }
+
+    .quantity-btn {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+        .quantity-btn:hover {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    .quantity-input {
+        width: 60px;
+        text-align: center;
+        padding: 5px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-add-to-cart {
+        background-color: #28a745;
+        color: white;
+    }
+
+        .btn-add-to-cart:hover {
+            background-color: #218838;
+        }
+
+    .btn-continue {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-continue:hover {
+            background-color: #5a6268;
+        }
+
+    .error-message {
+        color: #dc3545;
+        margin-top: 10px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="add-to-cart-container">
+    <div class="product-info">
+        <div class="product-image">
+            @if (Model.Product.ProductImages != null && Model.Product.ProductImages.Any())
+            {
+                <img src="~/Images/@Model.Product.ProductImages.First().ImageUrl" alt="@Model.Product.Name" />
+            }
+            else
+            {
+                <img src="~/Images/no-image.jpg" alt="No image" />
+            }
+        </div>
+
+        <div class="product-details">
+            <h2 class="product-title">@Model.Product.Name</h2>
+            <div class="product-price">@Model.Product.Price.ToString("N0") đ</div>
+
+            <div class="option-group">
+                <label class="option-label">Màu sắc</label>
+                <div class="form-control">@Model.ProductColor.ColorName</div>
+            </div>
+
+            <div class="option-group">
+                <label class="option-label">Kích thước</label>
+                <div class="form-control">@Model.ProductSize.NameSize</div>
+            </div>
+
+            <div class="option-group">
+                <label class="option-label">Số lượng</label>
+                <div class="quantity-control">
+                    <button class="quantity-btn minus-btn">-</button>
+                    <input type="number" class="quantity-input" value="1" min="1" max="@Model.Quantity" />
+                    <button class="quantity-btn plus-btn">+</button>
+                    <span>(Còn @Model.Quantity sản phẩm)</span>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-add-to-cart" id="addToCartBtn">
+                    <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                </button>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-continue">
+                    <i class="fas fa-arrow-left"></i> Tiếp tục mua hàng
+                </a>
+            </div>
+
+            <div id="errorMessage" class="error-message"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Xử lý tăng/giảm số lượng
+            $('.plus-btn').click(function () {
+                var input = $('.quantity-input');
+                var max = parseInt(input.attr('max'));
+                var value = parseInt(input.val());
+                if (value < max) {
+                    input.val(value + 1);
+                }
+            });
+
+            $('.minus-btn').click(function () {
+                var input = $('.quantity-input');
+                var value = parseInt(input.val());
+                if (value > 1) {
+                    input.val(value - 1);
+                }
+            });
+ 
+    </script>
+}

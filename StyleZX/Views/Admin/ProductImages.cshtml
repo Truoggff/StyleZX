@@ -1,0 +1,194 @@
+﻿@model StyleZX.Controllers.ProductImagesManagementViewModel
+@using PagedList.Mvc
+@using PagedList
+
+@{
+    ViewBag.Title = "Quản lý ảnh sản phẩm";
+}
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .manage-user-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 1200px;
+        padding: 10px;
+        padding-top: 0px;
+        align-items: center;
+    }
+
+    .tieude-ds {
+        margin-top: 0px;
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+        padding-top: 0px;
+    }
+
+    .form-control {
+        width: 250px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        padding: 6px 15px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border-radius: 6px;
+        width: 50px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .table thead th {
+            text-align: center;
+        }
+
+        .table th, .table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .table thead {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding-left: 0;
+        gap: 5px;
+    }
+
+        .pagination li a,
+        .pagination li span {
+            color: #007bff;
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+            .pagination li a:hover {
+                background-color: #e9ecef;
+                border-color: #ccc;
+            }
+
+        .pagination .active span {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    .text-center {
+        color: black;
+    }
+    .btn-primary2 {
+        background-color: #007bff;
+        color: #fff;
+        padding: 6px 15px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        border-radius: 6px;
+        width: 200px;
+    }
+
+        .btn-primary2:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="manage-user-container">
+    <nav class="tieude-ds">DANH SÁCH ẢNH SẢN PHẨM</nav>
+
+    @using (Html.BeginForm("ProductImages", "Admin", FormMethod.Get))
+    {
+        <div class="search-user" style="display: flex;">
+            <input type="text" name="searchString" value="@Model.SearchString" class="form-control mr-2" placeholder="Search" />
+            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+        </div>
+    }
+
+    <div style="width: 100%; display: flex; justify-content: flex-start; margin-top: 10px;">
+        <a href="@Url.Action("Create", "ProductImage")" class="btn btn-primary2">
+            <i class="fas fa-plus-circle"></i> Thêm ảnh sản phẩm
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr style="background-color:burlywood">
+                <th>Mã Danh Mục</th>
+                <th>Ảnh</th>
+                <th>Ảnh Chính</th>
+                <th>Thay Thế</th>
+                <th colspan="3">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ProductImages != null && Model.ProductImages.Any())
+            {
+                foreach (var image in Model.ProductImages)
+                {
+                    <tr>
+                        <td style="text-align: center">@image.ProductId</td>
+                        <td style="text-align: center">
+                            @if (!string.IsNullOrEmpty(image.ImageUrl))
+                            {
+                                <img src="~/Images/@image.ImageUrl" alt="@image.AltText" style="height: 25px;" />
+                            }
+                        </td>
+                        <td style="text-align: center">
+                            @(image.IsMain == true ? "✔" : "")
+                        </td>
+                        <td style="text-align: center">@image.AltText</td>
+                        <td style="width: 20px">
+                            <a href="@Url.Action("Details", "ProductImage", new { id = image.ImageId })" style="color:burlywood" class="btn-detail" title="Xem"><i class="fas fa-eye"></i></a>
+                        </td>
+                        <td style="width: 20px">
+                            <a href="@Url.Action("Edit", "ProductImage", new { id = image.ImageId })" style="color: #198754" class="btn-edit" title="Sửa"><i class="fas fa-edit"></i></a>
+                        </td>
+                        <td style="width: 20px">
+                            <a href="@Url.Action("Delete", "ProductImage", new { id = image.ImageId })" style="color: red" class="btn-delete" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">Không tìm thấy ảnh nào.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    @if (Model.ProductImages != null && Model.ProductImages.PageCount > 1)
+    {
+        <div class="text-center">
+            @Html.PagedListPager(Model.ProductImages, page => Url.Action("ProductImages", new { page, searchString = Model.SearchString }))
+        </div>
+    }
+</div>

@@ -1,0 +1,1172 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <title>@ViewBag.Title - Thời Trang StyleZX</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        .nav-item.dropdown {
+            position: relative;
+        }
+
+            .nav-item.dropdown:hover .dropdown-menu {
+                display: block;
+            }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            background-color: white; /* nền sáng ấm áp */
+            min-width: 160px;
+            padding: 5px 0;
+            margin: 0;
+            border: 1px solid #f6d5b3;
+            box-shadow: 0 4px 10px rgba(255, 192, 120, 0.3);
+            border-radius: 8px;
+        }
+
+            .dropdown-menu a {
+                display: block;
+                padding: 10px 15px;
+                color: #d15f00; /* cam sáng tươi tắn */
+                text-decoration: none;
+                white-space: nowrap;
+                font-weight: 500;
+                transition: background-color 0.25s, color 0.25s;
+            }
+
+                .dropdown-menu a:hover {
+                    background-color:greenyellow; /* nền hover nhạt */
+                    color: #a24000;
+                }
+
+
+
+
+
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+
+            .header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0px 20px;
+                background-color:tomato;
+                border-radius: 8px;
+
+            }
+
+            .logo-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+            }
+
+            .logo {
+                height: 80px;
+            }
+
+            .text-run {
+                overflow: hidden;
+                white-space: nowrap;
+                position: relative;
+            }
+
+            .text-run p {
+                display: inline-block;
+                padding-left: 100%;
+                animation: scroll-left 10s linear infinite;
+                font-size: 16px;
+                color: black;
+            }
+
+            @@keyframes scroll-left {
+                0% {
+                    transform: translateX(0%);
+                }
+
+                100% {
+                    transform: translateX(-100%);
+                }
+            }
+
+            .logo-text h1 {
+                font-family: 'Montserrat', sans-serif;
+                font-size: 34px;
+                margin: 0;
+                background: #FFFF; 
+                -webkit-background-clip: text; 
+                color: transparent; 
+            }
+
+
+            .logo-text p {
+                font-size: 13px;
+                margin: 0px;
+                padding-top: 10px;
+                color:black;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: bold;
+            }
+
+            .search-box {
+                display: flex;
+                align-items: center;
+                border: 2px solid #ff0080;
+                border-radius: 5px;
+                overflow: hidden;
+            }
+
+            .search-box input {
+                padding: 8px;
+                border: none;
+                width: 400px;
+                outline: none;
+                font-size: 14px;
+            }
+
+            .search-btn {
+                padding: 8px 12px;
+                border: none;
+                background: linear-gradient(45deg, #ff0080, #ffcc00);
+                cursor: pointer;
+                color: white;
+                font-size: 16px;
+            }
+
+            .header-buttons {
+                display: flex;
+                gap: 10px;
+            }
+
+
+        .btn {
+            padding: 8px 10px;
+            border: 0px solid black;
+            background: none;
+            cursor: pointer;
+            font-size: 14px;
+            background-color: gainsboro;
+        }
+
+        .nav-account-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: auto;
+            border-radius: 8px;
+        }
+
+        .nav-account-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .account-name {
+            font-weight: 500;
+            color: #333;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .profile-name {
+            text-decoration: none;
+            color:black;
+        }
+        .account-name :hover {
+            color:black;
+        }
+        .btn:hover {
+            background-color: antiquewhite;
+
+        }
+
+
+            .navbar-brand .logo-img {
+                width: 120px;
+            }
+
+            .navbar {
+                font-family: 'Quicksand', sans-serif;
+                font-size: 15px;
+                background-color: white;
+                border-bottom: 2px solid #ddd;
+                width: 100%;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+                padding: 10px 0;
+                transition: top 0.3s; 
+            }
+
+            .fixed-navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000; 
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar .container {
+                width: 100%;
+                background-color: white; 
+            }
+
+            .navbar-nav .nav-link {
+                color: #333 !important; 
+                font-weight: 600;
+                padding: 10px 15px;
+                bottom: -4px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .navbar-nav .nav-link:hover {
+                color: darkorange !important; 
+            }
+
+
+            .navbar-toggler {
+                border: none;
+            }
+
+            .navbar-toggler:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
+            .nav-link {
+                position: relative;
+            }
+
+            .nav-link::after {
+                content: "";
+                display: block;
+                width: 100%;
+                height: 2px;
+                background-color: #e44d26;
+                position: absolute;
+                bottom: -3px;
+                left: 0;
+                transform: scaleX(0);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .nav-link:hover::after {
+                transform: scaleX(1);
+            }
+
+
+
+            .footer-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 20px;
+                background: white;
+                font-family: 'Montserrat', sans-serif;
+            }
+
+            .contact-info, .support-policies, .newsletter, .social-links {
+                flex: 1;
+                text-align: center;
+                max-width: 25%;
+            }
+
+            .phone {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .newsletter {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+                width: 100%;
+            }
+
+            .newsletter-box {
+                display: flex;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                overflow: hidden;
+                justify-content: center;
+                height: 40px;
+            }
+
+            .newsletter-box input {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                outline: none;
+            }
+
+            .newsletter-box button {
+                padding: 10px;
+                border: none;
+                background-color: antiquewhite;
+                color: darkblue;
+                cursor: pointer;
+                justify-content: center;
+            }
+
+            .font-bole {
+                font-weight: bold;
+            }
+
+            .icons {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .icons i {
+                font-size: 24px;
+                cursor: pointer;
+            }
+
+            .social-icons {
+                display: flex;
+                gap: 15px;
+            }
+
+            .social-icons i, .social-icons img {
+                font-size: 24px;
+                cursor: pointer;
+                transition: transform 0.3s;
+            }
+
+            .social-icons i:hover, .social-icons img:hover {
+                transform: scale(1.2);
+                color: #007bff;
+            }
+
+            .infor-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                background-color: gainsboro;
+                width: 100% !important;
+                padding: 20px;
+                text-align: left;
+                font-size: 13px;
+                border-radius: 10px;
+                font-family: "Roboto Slab", sans-serif;
+            }
+
+            .infor-container > div {
+                flex: 1 1 200px;
+                max-width: 250px;
+            }
+
+            .infor-img {
+                position: relative;
+                width: 300px;
+                height: 300px;
+                overflow: hidden;
+                border-radius: 10px;
+            }
+
+            .infor-img img {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: cover; 
+                opacity: 0; 
+                transition: opacity 1s ease-in-out;
+            }
+
+            .infor-img img.active {
+                opacity: 1;
+            }
+
+            .infor-shop {
+                display: flex;
+                flex-direction: column;
+                text-align: start;
+                font-family: "Roboto Slab", sans-serif;
+                background-color: white;
+                padding: 10px;
+                border-radius: 10px;
+                height: 100%;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            }
+
+            .line-infor {
+                font-size: 15px;
+                font-weight: bold;
+            }
+
+            .infor-support {
+                background-color: white;
+                padding: 10px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+            }
+
+            .infor-support a {
+                text-decoration: none;
+                color: black;
+            }
+
+            .infor-support a:hover {
+                color: crimson;
+            }
+
+
+            .content-container {
+                margin: 10px;
+            }
+
+            .copyright {
+                background-color: white;
+                margin-bottom: 0px;
+            }
+
+            .copyright p {
+                text-align: center;
+                font-family: Montserrat;
+                font-size: 15px;
+                font-weight: bold;
+            }
+
+            .container.body-content {
+                width: 100%;
+                max-width: 100%;
+                padding: 0;
+                margin: 0 auto;
+            }
+
+            .infor-address {
+                width: 100px;
+                height: 100px;
+            }
+
+
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: #d32f2f;
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: #b71c1c;
+        }
+
+        .bttop-icon {
+            width: 20px;
+            height: 20px;
+            transform: rotate(-90deg);
+            fill: white;
+        }
+
+        .text-bttop {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg); 
+            font-size: 13px;
+            font-weight: 500;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="@Url.Action("Index", "Home")" class="logo-container">
+            <img src="~/Images/Logo_mauu.jpg" alt="StyleZX" class="logo">
+            <div class="logo-text">
+                <h1>StyleZX</h1>
+                <p>Thế Giới Thời Trang</p>
+            </div>
+        </a>
+        <div class="text-run">
+            <p>🔥 Kỉ niệm 50 năm Thống Nhất Đất Nước <img src="" /> - Thời trang StyleZX giảm giá lên tới 50% ! 🔥</p>
+        </div>
+
+        @{
+            var fullname = Session["FullName"] as string;
+        }
+        <div class="header-buttons">
+            <div class="nav-account-container">
+                @if (string.IsNullOrEmpty(fullname))
+                {
+                    <div class="nav-account-item">
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Get))
+                        {
+                            <button type="submit" class="btn">Tài khoản 👤</button>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="nav-account-item">
+                        <span class="account-name">
+                            <a href="@Url.Action("Profile", "Account")" class="profile-name">
+                                <i class="fas fa-user-circle"></i> @fullname
+                            </a>
+                        </span>
+                    </div>
+                    <div class="nav-account-item">
+                        @using (Html.BeginForm("Logout", "Account", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn">Đăng xuất</button>
+                        }
+                    </div>
+                }
+            </div>
+            <a class="btn" href="@Url.Action("ListCart", "Cart")" id="cart-link">
+                Giỏ hàng <i class="fas fa-shopping-cart" style="width:20px"></i>
+                <span id="cart-count" style="color:red">(@(ViewBag.CartCount ?? 0))</span>
+            </a>
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm " id="navbar">
+        <div class="container" style="color: black; border:2px ">
+            <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                <img src="~/Images/Logo.jpg" alt="StyleZX Logo" class="logo-img">
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1" style="color: black; ">
+                    <li class="nav-item">
+                        @Html.ActionLink("TRANG CHỦ", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <!-- HOT TREND -->
+                    <!-- HOT TREND -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="@Url.Action("HotTrend", "Home")">
+                            HOT TREND
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 15 })">Áo 2 Dây</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 16 })">Áo CropTop</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 17 })">Váy Body</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 18 })">Áo Suông Dài</a>
+                        </div>
+                    </li>
+
+                    <!-- ÁO XUÂN HÈ -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="@Url.Action("XuanHe", "Home")">
+                            ÁO XUÂN HÈ
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 1 })">Áo Phông</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 2 })">Áo Sơ Mi Dài</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 3 })">Áo Polo</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 4 })">Áo Cộc Tay</a>
+                        </div>
+                    </li>
+
+                    <!-- ÁO THU ĐÔNG -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="@Url.Action("ThuDong", "Home")">
+                            ÁO THU ĐÔNG
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 5 })">Áo Khoác Gió</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 6 })">Áo Khoác Dày</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 7 })">Áo Len</a>
+                        </div>
+                    </li>
+
+                    <!-- QUẦN -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="@Url.Action("Quan", "Home")">
+                            QUẦN
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 8 })">Quần Âu</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 9 })">Quần Jean</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 10 })">Quần Shorts</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 11 })">Quần Jogger</a>
+                        </div>
+                    </li>
+
+                    <!-- PHỤ KIỆN -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="@Url.Action("PhuKien", "Home")">
+                            PHỤ KIỆN
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 12 })">Giày/Dép</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 13 })">Balo/Túi</a>
+                            <a class="dropdown-item" href="@Url.Action("SanPhamTheoDanhMuc", "Home", new { categoryId = 14 })">Đồ Lót</a>
+                        </div>
+                    </li>
+
+
+                    <!-- TIN TỨC -->
+                    <li class="nav-item">
+                        @Html.ActionLink("TIN TỨC", "TinTuc", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                </ul>
+                <div class="search-box">
+                    @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+                    {
+                        <input type="text" name="query" placeholder="Search">
+                        <button type="submit" class="search-btn">🔍</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr style="width: 90%; margin: 20px auto; border-top: 2px solid brown" />
+        <footer>
+            <div class="footer-container">
+                <div class="contact-info">
+                    <p class="font-bole">GỌI MUA HÀNG NGAY</p>
+                    <div class="phone">
+                        <img src="~/Images/phone.png" alt="Phone" width="14">
+                        <strong>0964.068.959</strong>
+                    </div>
+                    <p style="font-size: 15px">Tất cả các ngày trong tuần</p>
+                    <p style="font-size: 15px">( 7:30 - 22:30 )</p>
+                </div>
+                <div class="support-policies">
+                    <p class="font-bole">NGÀY GIỜ MỞ CỬA</p>
+                    <div class="phone">
+                        <img src="~/Images/phone.png" alt="Phone" width="14">
+                        <strong>0964.068.959</strong>
+                    </div>
+                    <p style="font-size: 15px">Các ngày trong tuần ( Trừ dịp lễ )</p>
+                    <p style="font-size: 15px">( 7:30 - 22:30 )</p>
+                </div>
+                <div class="newsletter">
+                    <p class="font-bole">ĐĂNG KÝ NHẬN THÔNG TIN MỚI</p>
+                    <div class="newsletter-box">
+                        <input type="email" placeholder="Nhập email của bạn...">
+                        <button>Đăng Ký</button>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <p class="font-bole">THEO DÕI CHÚNG TÔI</p>
+                    <div class="icons">
+                        <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/truogff/" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="@("https://www.tiktok.com/@truoggff")" target="_blank">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+
+                        <a href="https://zalo.me/0838640075" target="_blank">
+                            <img src="~/Images/zalo-icon.svg" alt="Zalo" width="26">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="infor-container">
+                <div class="infor-img">
+                    <img src="~/Images/anhdong1.jpg" alt="Ảnh 1" class="active">
+                    <img src="~/Images/anhdong2.jpg" alt="Ảnh 2">
+                    <img src="~/Images/anhdong3.jpg" alt="Ảnh 1" class="active">
+                    <img src="~/Images/anhdong4.jpg" alt="Ảnh 2">
+                </div>
+                <div class="infor-support">
+                    <p class="line-infor">HỖ TRỢ KHÁCH HÀNG</p>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Hướng dẫn mua hàng</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Hướng dẫn chọn size</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Phương thức thanh toán</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Chính sách vận chuyển</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Chính sách bảo mật</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Quy định đổi trả</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Chính sách xử lý khiếu nại</p>
+                    </a>
+                </div>
+                <div class="infor-support">
+                    <p class="line-infor">CHĂM SÓC KHÁCH HÀNG</p>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Đánh giá dịch vụ</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Tiềm năng phát triển</p>
+                    </a>
+                    <a href="https://www.facebook.com/yeus.duyen.1" target="_blank">
+                        <p>Câu hỏi thường gặp</p>
+                    </a>
+                </div>
+                <div class="infor-shop">
+                    <p class="line-infor">THÔNG TIN CỬA HÀNG</p>
+                    <p><b>HỘ KINH DOANH STYLEZX</b></p>
+                    <p><b>Địa Chỉ: </b>Số nhà 68, Khu Xóm Giữa, Xã Ngô Xá, Huyện Cẩm Khê, Tỉnh Phú Thọ.</p>
+                    <p><b>HotLine: </b>0838.640.075</p>
+                    <p><b>Email: </b>stylezx@stylezx.vn</p>
+                    <p><b>Sản Phẩm: </b>Chuyển buốn bán các sản phẩm thời trang may mặc, phụ kiện thời trang và tư vấn ăn mặc cho mọi lứa tuổi.</p>
+                </div>
+                <div class="infor-address">
+                    <p class="line-infor">BẢN ĐỒ</p>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3529.2286668781517!2d105.04475882135497!3d21.47079464728043!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31349f002274cc7d%3A0x13ade0310c0dd609!2sTh%E1%BB%9Di%20Trang%20StyleZX!5e1!3m2!1svi!2s!4v1744585619808!5m2!1svi!2s"
+                            width="200"
+                            height="200"
+                            style="border:1px solid #ccc; border-radius:8px;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            border-radius="50%"
+                            referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+            <hr style="width: 90%; margin: 20px auto; border-top: 2px solid brown" />
+            <div class="copyright">
+                <p>&copy; Copyright &reg; @DateTime.Now.Year - STYLEZX </p>
+            </div>
+        </footer>
+    </div>
+    <div id="bttop" class="back-to-top">
+        <svg version="1.1" class="bttop-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32.635 32.635">
+            <g>
+                <path d="M32.135,16.817H0.5c-0.276,0-0.5-0.224-0.5-0.5s0.224-0.5,0.5-0.5h31.635c0.276,0,0.5,0.224,0.5,0.5 S32.411,16.817,32.135,16.817z" />
+                <path d="M19.598,29.353c-0.128,0-0.256-0.049-0.354-0.146c-0.195-0.195-0.195-0.512,0-0.707l12.184-12.184L19.244,4.136 c-0.195-0.195-0.195-0.512,0-0.707s0.512-0.195,0.707,0l12.537,12.533c0.094,0.094,0.146,0.221,0.146,0.354 s-0.053,0.26-0.146,0.354L19.951,29.206C19.854,29.304,19.726,29.353,19.598,29.353z" />
+            </g>
+        </svg>
+        <span class="text-bttop">Về đầu trang</span>
+
+    </div>
+    <style>
+        .chat-float-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 60px;
+            height: 60px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            transition: all 0.3s ease;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .chat-float-button:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        .chat-float-button svg {
+            pointer-events: none;
+            width: 24px;
+            height: 24px;
+        }
+
+
+        .chat-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 380px;
+            background-color: #fff;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+            z-index: 1000;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.8) translateY(50px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+            .chat-box.show {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                pointer-events: auto;
+            }
+
+        .chat-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .close-chat {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .chat-history {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-message {
+            background-color: #e1f7d5;
+            margin-left: 20%;
+        }
+
+        .ai-reply {
+            background-color: #d1e7ff;
+            margin-right: 20%;
+        }
+
+        /* ✅ Chỉ định riêng phần nội dung tin nhắn xuống dòng chính xác */
+        .message-content {
+            white-space: pre-line;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        #chat-form {
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        #userMessage {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            min-width: 0;
+        }
+
+        .chatbox-button {
+            padding: 0 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: background-color 0.3s ease;
+        }
+
+            .chatbox-button:hover {
+                background-color: #45a049;
+            }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            margin-top: 5px;
+        }
+
+            .typing-indicator span {
+                width: 8px;
+                height: 8px;
+                background: #999;
+                border-radius: 50%;
+                animation: dot-pulse 1.4s infinite ease-in-out;
+            }
+
+                .typing-indicator span:nth-child(2) {
+                    animation-delay: 0.2s;
+                }
+
+                .typing-indicator span:nth-child(3) {
+                    animation-delay: 0.4s;
+                }
+
+        @@keyframes dot-pulse {
+            0%, 60%, 100% {
+                opacity: 0.3;
+            }
+
+            30% {
+                opacity: 1;
+            }
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <!-- Nút Chat nổi -->
+    <div class="chat-float-button" id="chat-float-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+        </svg>
+    </div>
+
+    <!-- Hộp Chat -->
+    <div class="chat-box" id="chat-box">
+        <div class="chat-header">
+            <span>Chat với StyleZX AI</span>
+            <button class="close-chat" aria-label="Đóng chat">×</button>
+        </div>
+        <div class="chat-history" id="chat-history"></div>
+
+        @using (Html.BeginForm("", "", FormMethod.Post, new { id = "chat-form", novalidate = "novalidate" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="input-group">
+                <input type="text" id="userMessage" name="userMessage" placeholder="Hãy hỏi về thời trang..." required autocomplete="off" />
+                <button type="submit" class="chatbox-button">Gửi</button>
+            </div>
+        }
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = document.querySelectorAll(".infor-img img");
+            let currentIndex = 0;
+
+            setInterval(() => {
+                images[currentIndex].classList.remove("active");
+                currentIndex = (currentIndex + 1) % images.length;
+                images[currentIndex].classList.add("active");
+            }, 3000);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const navbar = document.getElementById("navbar");
+            const stickyOffset = navbar.offsetTop;
+
+            function stickyNavbar() {
+                if (window.pageYOffset >= stickyOffset) {
+                    navbar.classList.add("fixed-navbar");
+                } else {
+                    navbar.classList.remove("fixed-navbar");
+                }
+            }
+
+            window.addEventListener("scroll", stickyNavbar);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const backToTopBtn = document.getElementById('bttop');
+
+            window.addEventListener('scroll', function () {
+                if (window.pageYOffset > 800) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                if (window.pageYOffset > 0) {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const floatButton = document.getElementById('chat-float-button');
+            const chatBox = document.getElementById('chat-box');
+            const chatForm = document.getElementById('chat-form');
+            const userInput = document.getElementById('userMessage');
+            const chatHistory = document.getElementById('chat-history');
+            const closeButton = document.querySelector('.close-chat');
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            const escapeHtml = (text) => {
+                return text?.replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;") || '';
+            };
+
+            const scrollToBottom = () => {
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            };
+
+            const addMessage = (sender, message, isError = false) => {
+                const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const cssClass = sender === 'user' ? 'user-message' : isError ? 'ai-error' : 'ai-reply';
+                const name = sender === 'user' ? 'Bạn' : 'StyleZX AI';
+
+                const html = `
+                        <div class="message ${cssClass}">
+                            <div class="message-header">
+                                <strong>${name}</strong>
+                                <span class="timestamp">${time}</span>
+                            </div>
+                            <div class="message-content">${escapeHtml(message)}</div>
+                        </div>`;
+                chatHistory.insertAdjacentHTML('beforeend', html);
+                scrollToBottom();
+            };
+
+            const sendMessageToAI = async (message) => {
+                const loadingId = `loading-${Date.now()}`;
+                chatHistory.insertAdjacentHTML('beforeend', `
+                        <div id="${loadingId}" class="ai-reply">
+                            <div class="typing-indicator"><span></span><span></span><span></span></div>
+                        </div>`);
+                scrollToBottom();
+
+                try {
+                    const res = await fetch('/FashionAI/Ask', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token
+                        },
+                        body: JSON.stringify({ userMessage: message })
+                    });
+
+                    document.getElementById(loadingId)?.remove();
+
+                    if (!res.ok) throw new Error(`Lỗi server: ${res.status}`);
+                    const data = await res.json();
+                    addMessage('ai', data.reply);
+                } catch (err) {
+                    document.getElementById(loadingId)?.remove();
+                    addMessage('ai', '⚠️ ' + err.message, true);
+                }
+            };
+
+            floatButton.addEventListener('click', () => {
+                chatBox.classList.add('show');
+                floatButton.style.display = 'none';
+                userInput.focus();
+            });
+
+            closeButton.addEventListener('click', () => {
+                chatBox.classList.remove('show');
+                floatButton.style.display = 'flex';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!chatBox.contains(e.target) && !floatButton.contains(e.target)) {
+                    chatBox.classList.remove('show');
+                    floatButton.style.display = 'flex';
+                }
+            });
+
+            chatForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const msg = userInput.value.trim();
+                if (!msg) return;
+
+                addMessage('user', msg);
+                userInput.value = '';
+                userInput.disabled = true;
+
+                await sendMessageToAI(msg);
+
+                userInput.disabled = false;
+                userInput.focus();
+            });
+
+            userInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    chatForm.dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // Lời chào ban đầu
+            addMessage('ai', '👋 Hello! Tôi là StyleZX AI. Tôi có thể giúp gì cho bạn? 😊');
+        });
+    </script>
+
+
+    @RenderSection("Styles", false)
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+﻿@model StyleZX.Models.Product
+
+@{
+    ViewBag.Title = "Chi Tiết Sản Phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .text-center {
+        margin-top: 0px;
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .detail-container {
+        max-width: 1200px;
+        margin: 10px auto;
+        padding: 20px;
+        background-color: antiquewhite;
+        border-radius: 10px;
+        font-family: 'Montserrat', sans-serif;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group p {
+            margin: 0;
+            padding: 8px;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
+    .action-links {
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 8px 20px;
+        margin: 0 5px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-default {
+        background-color: #6c757d;
+        color: white;
+        border: none;
+    }
+
+        .btn-default:hover {
+            background-color: #5a6268;
+        }
+</style>
+
+<div class="detail-container">
+    <p class="text-center">Chi Tiết Sản Phẩm</p>
+    <div style="display:flex;gap: 10px;max-width: 1200px; margin:0px; padding: 0px; background-color: antiquewhite; font-family: 'Montserrat', sans-serif;">
+
+        <div>
+            <div class="form-group">
+                <label>@Html.DisplayNameFor(model => model.Category.Name)</label>
+                <p>@Html.DisplayFor(model => model.Category.Name)</p>
+            </div>
+
+            <div class="form-group">
+                <label>@Html.DisplayNameFor(model => model.Name)</label>
+                <p>@Html.DisplayFor(model => model.Name)</p>
+            </div>
+
+            <div class="form-group">
+                <label>@Html.DisplayNameFor(model => model.Description)</label>
+                <p>@Html.DisplayFor(model => model.Description)</p>
+            </div>
+
+            <div class="form-group">
+                <label>@Html.DisplayNameFor(model => model.Price)</label>
+                <p>@Html.DisplayFor(model => model.Price)</p>
+            </div>
+
+            <div class="form-group">
+                <label>@Html.DisplayNameFor(model => model.CreatedAt)</label>
+                <p>@Html.DisplayFor(model => model.CreatedAt)</p>
+            </div>
+
+            <div class="form-group">
+                <label>@Html.DisplayNameFor(model => model.UpdatedAt)</label>
+                <p>@Html.DisplayFor(model => model.UpdatedAt)</p>
+            </div>
+        </div>
+
+        <p style="margin-top: 30px;">
+            @if (Model.ProductImages != null && Model.ProductImages.Count > 0)
+            {
+                <img style="width: 300px; border-radius: 15px" src="~/Images/@Model.ProductImages.FirstOrDefault().ImageUrl" alt="@Model.ProductImages.FirstOrDefault().AltText" />
+            }
+            else
+            {
+            <p>Không có ảnh sản phẩm</p>
+        }
+            </p>
+    </div>
+    <div class="action-links" style="margin-top: 10px;">
+        @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.ProductId }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Quay lại danh sách", "Products", "Admin", null, new { @class = "btn btn-default" })
+    </div>
+</div>

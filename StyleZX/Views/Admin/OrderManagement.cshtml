@@ -1,0 +1,203 @@
+﻿@model PagedList.IPagedList<StyleZX.Models.Order>
+@using PagedList.Mvc
+@using StyleZX.Models
+
+@{
+    ViewBag.Title = "Quản lý Đơn hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .manage-order-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 1200px;
+        padding: 10px;
+        padding-top: 0px;
+        align-items: center;
+    }
+
+    .tieude-ds {
+        margin-top: 0px;
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .table thead th {
+        text-align: center;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        padding-left: 0;
+        gap: 5px;
+    }
+
+        .pagination li {
+            display: inline;
+        }
+
+            .pagination li a,
+            .pagination li span {
+                color: #007bff;
+                padding: 6px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                text-decoration: none;
+            }
+
+                .pagination li a:hover {
+                    background-color: #e9ecef;
+                    border-color: #ccc;
+                }
+
+        .pagination .active span {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    .badge {
+        padding: 5px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        border-radius: 20px;
+        text-transform: uppercase;
+    }
+
+    .badge-warning {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+    .badge-info {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .badge-primary {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+</style>
+
+<div class="manage-order-container">
+    <nav class="tieude-ds">DANH SÁCH ĐƠN HÀNG</nav>
+
+    <div style="text-align: left; width: 100%;">
+        @using (Html.BeginForm("OrderManagement", "Admin", FormMethod.Get))
+        {
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <nav style="font-size:18px">Lọc theo trạng thái</nav>
+                <div style="width: 200px;">
+                    @Html.DropDownList("status", ViewBag.Statuses as SelectList, "Tất cả trạng thái", new
+                    {
+                        @class = "form-control",
+                        onchange = "this.form.submit();"
+                    })
+                </div>
+            </div>
+        }
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr style="background-color: burlywood">
+                <th>Mã đơn</th>
+                <th>Khách hàng</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Thanh toán</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OrderId</td>
+                    <td>@item.User.FullName</td>
+                    <td>@item.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@item.TotalAmount.ToString("N0") đ</td>
+                    <td>
+                        <span class="badge
+                            @(item.Status == "Chờ xác nhận" ? "badge-warning" :
+                              item.Status == "Đang xử lý" ? "badge-info" :
+                              item.Status == "Đang giao" ? "badge-primary" :
+                              item.Status == "Đã giao" ? "badge-success" : "badge-danger")">
+                            @item.Status
+                        </span>
+                    </td>
+                    <td>@item.PaymentMethod</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="@Url.Action("OrderDetails", "Admin", new { id = item.OrderId })"
+                               class="btn btn-sm btn-info" title="Chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    @if (Model.PageCount > 1)
+    {
+        <div class="text-center">
+            @Html.PagedListPager(Model, page => Url.Action("OrderManagement", new { page, status = ViewBag.CurrentStatus }))
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
+    }
+</div>
+
+@section scripts {
+    <script>
+        // Tự động đóng thông báo sau 5 giây
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').alert('close');
+            }, 5000);
+        });
+    </script>
+}

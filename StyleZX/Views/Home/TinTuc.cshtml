@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "Tin Tức";
+}
+<style>
+    .text-tintuc p{
+        margin: 10px;
+        text-align:center;
+        font-size: 20px;
+        color: orangered;
+    }
+    .header-tieude {
+        margin-top: 20px;
+        margin-bottom: 40px;
+        margin-left: 80px;
+        font-size: 20px;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+    }
+    .news-section {
+        padding: 20px 0;
+        max-width: 1200px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .news-card {
+        margin-bottom: 30px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .news-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    .news-card a{
+        text-decoration: none;
+    }
+
+    .news-image {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 0;
+        display: block;
+    }
+
+
+    .news-title {
+        padding: 15px;
+        text-align: center;
+        font-size: 16px;
+        color: #333;
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .news-item {
+            margin-bottom: 20px;
+        }
+    }
+</style>
+<div class="container news-section">
+    <p class="header-tieude">TIN TỨC THỜI TRANG MỚI NHẤT</p>
+    <div class="row">
+        <!-- Hàng 1 -->
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new1.jpg" alt="Xu hướng thời trang hè 2025" class="img-responsive news-image">
+                    <div class="news-title">Xu hướng thời trang hè 2025</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new2.jpg" alt="Cách phối đồ với áo sơ mi trắng" class="img-responsive news-image">
+                    <div class="news-title">Cách phối đồ với áo sơ mi trắng</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new3.jpg" alt="Bí quyết chọn váy công sở" class="img-responsive news-image">
+                    <div class="news-title">Bí quyết chọn váy công sở</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new4.jpg" alt="Phong cách đường phố hot" class="img-responsive news-image">
+                    <div class="news-title">Phong cách đường phố hot</div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Hàng 2 -->
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new5.jpg" alt="Màu sắc thịnh hành mùa thu" class="img-responsive news-image">
+                    <div class="news-title">Màu sắc thịnh hành mùa thu</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new6.jpg" alt="Thời trang GenZ lên ngôi" class="img-responsive news-image">
+                    <div class="news-title">Thời trang GenZ lên ngôi</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new7.jpg" alt="Sắc màu dân tộc cách tân" class="img-responsive news-image">
+                    <div class="news-title">Phong cách lễ hội truyền thống</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new8.jpg" alt="Cái lạnh nhưng phải phong cách" class="img-responsive news-image">
+                    <div class="news-title">Cái lạnh nhưng phải phong cách</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new9.jpg" alt="Thời trang vượt tuổi tác" class="img-responsive news-image">
+                    <div class="news-title">Thời trang vượt tuổi tác</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new10.jpg" alt="Trang phục đi xem Concert" class="img-responsive news-image">
+                    <div class="news-title">Trang phục đi xem Concert</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new11.jpg" alt="Trang phục xuân đón tết" class="img-responsive news-image">
+                    <div class="news-title">Trang phục xuân đón tết</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6 news-item">
+            <div class="news-card">
+                <a href="https://www.facebook.com/yeus.duyen.1">
+                    <img src="~/Images/new12.jpg" alt="Phong cách cá tính mạnh mẽ" class="img-responsive news-image">
+                    <div class="news-title">Phong cách cá tính mạnh mẽ</div>
+                </a>
+            </div>
+        </div>      
+    </div>
+</div>
+
+
+

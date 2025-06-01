@@ -1,0 +1,276 @@
+﻿@model IEnumerable<StyleZX.Models.ViewModel.CartItemViewModel>
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .input-group-prepend button:hover {
+        background-color: red;
+    }
+
+    .btn-danger button:hover {
+        background-color: crimson;
+    }
+
+    .input-group-append button:hover {
+        background-color: aqua;
+    }
+
+    thead, tbody, tfoot {
+        border: 2px solid burlywood;
+    }
+
+    .btn-continue {
+        background-color: chartreuse;
+    }
+
+        .btn-continue:hover {
+            background-color: cornflowerblue;
+        }
+
+    .btn-buy {
+        background-color: aqua;
+    }
+
+        .btn-buy:hover {
+            background-color: crimson;
+        }
+
+    .variant-select {
+        min-width: 100px;
+        padding: 5px;
+        border-radius: 4px;
+        border: 1px solid #ced4da;
+    }
+
+        .variant-select:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+</style>
+
+<div class="container" style="background-color: antiquewhite; margin-top: 10px; padding:20px; max-width: 95%; border-radius: 8px">
+    <h2 style="display:flex; align-items: center; justify-content: center;">GIỎ HÀNG</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info" style="background-color: antiquewhite; border: 0; text-align: center; font-style: italic;font-size: 20px;">
+            Giỏ hàng của bạn đang trống. Vui lòng <a href="@Url.Action("Index", "Home")">tiếp tục mua sắm</a> để có thể đặt hàng!
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive" style="margin-top: 30px;">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr style="background-color: darkorange">
+                        <th>Sản phẩm</th>
+                        <th>Màu sắc</th>
+                        <th>Kích thước</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr data-cart-id="@item.CartId" data-product-id="@item.ProductId">
+                            <td>
+                                <div class="d-flex align-items-center" style="gap: 10px;">
+                                    <img src="~/Images/@item.ImageUrl" alt="@item.ProductName" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;" class="mr-3">
+                                    <div>
+                                        <h6>@item.ProductName</h6>
+                                        <small>Mã SP: @item.ProductId</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="vertical-align:middle">
+                                <select class="variant-select color-select"
+                                        data-cart-id="@item.CartId"
+                                        onchange="updateVariant(this, 'color')">
+                                    @foreach (var color in item.AvailableColors)
+                                    {
+                                        <option value="@color" @(color == item.Color ? "selected" : "")>@color</option>
+                                    }
+                                </select>
+                            </td>
+                            <td style="vertical-align:middle">
+                                <select class="variant-select size-select"
+                                        data-cart-id="@item.CartId"
+                                        onchange="updateVariant(this, 'size')">
+                                    @foreach (var size in item.AvailableSizes)
+                                    {
+                                        <option value="@size" @(size == item.Size ? "selected" : "")>@size</option>
+                                    }
+                                </select>
+                            </td>
+                            <td style="vertical-align:middle">@item.Price.ToString("N0") đ</td>
+                            <td style="vertical-align:middle">
+                                <div class="input-group" style="width: 120px;">
+                                    <div class="input-group-prepend">
+                                        <button class="btn btn-outline-secondary btn-sm" type="button" onclick="updateQuantity(@item.CartId, -1)"><i class="fas fa-minus"></i></button>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm text-center" value="@item.Quantity" id="quantity-@item.CartId">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary btn-sm" type="button" onclick="updateQuantity(@item.CartId, 1)"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="vertical-align:middle" class="item-total">@item.TotalPrice.ToString("N0") đ</td>
+                            <td style="vertical-align:middle;text-align: center">
+                                <button class="btn btn-danger btn-sm" style="background-color: red; justify-content: center" onclick="removeFromCart(@item.CartId, this)">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5" class="text-right"><strong>Tổng cộng:</strong></td>
+                        <td colspan="2" id="cart-total-amount"><strong>@ViewBag.TotalAmount.ToString("N0") đ</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="text-right mt-4" style="text-align:right">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-continue mr-2">
+                <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+            </a>
+            <a href="@Url.Action("CheckOut", "Order")" class="btn btn-buy">
+                <i class="fas fa-shopping-bag"></i> Thanh toán
+            </a>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script>
+        function updateQuantity(cartId, change) {
+            var input = $('#quantity-' + cartId);
+            var newQuantity = parseInt(input.val()) + change;
+
+            if (newQuantity < 1) {
+                alert("Số lượng không thể nhỏ hơn 1");
+                return;
+            }
+            var maxQuantity = parseInt(input.data('max-quantity')) || 999;
+
+            if (newQuantity > maxQuantity) {
+                alert("Số lượng vượt quá tồn kho. Chỉ còn " + maxQuantity + " sản phẩm");
+                return;
+            }
+
+            input.val(newQuantity);
+
+            $.post('@Url.Action("UpdateQuantity", "Cart")', {
+                cartId: cartId,
+                quantity: newQuantity
+            }, function(response) {
+                if (response.success) {
+                    updateCartUI(response);
+                    location.reload();
+                } else {
+                    alert(response.message);
+                    input.val(parseInt(input.val()) - change);
+                }
+            }).fail(function() {
+                alert('Lỗi kết nối');
+                input.val(parseInt(input.val()) - change);
+            });
+        }
+
+        function updateVariant(selectElement, variantType) {
+            const cartId = $(selectElement).data('cart-id');
+            const newValue = $(selectElement).val();
+            const row = $(selectElement).closest('tr');
+            const productId = row.data('product-id');
+
+            // Hiển thị loading
+            $(selectElement).prop('disabled', true);
+            const originalValue = $(selectElement).data('original-value');
+            const loadingHtml = '<i class="fas fa-spinner fa-spin"></i>';
+            $(selectElement).parent().append(loadingHtml);
+
+            $.post('@Url.Action("UpdateVariant", "Cart")', {
+                cartId: cartId,
+                productId: productId,
+                variantType: variantType,
+                newValue: newValue
+            }, function(response) {
+                if (response.success) {
+                    // Cập nhật dropdown size nếu thay đổi màu sắc
+                    if (variantType === 'color') {
+                        const sizeSelect = row.find('.size-select');
+                        sizeSelect.empty();
+                        response.availableSizes.forEach(size => {
+                            sizeSelect.append(new Option(size, size));
+                        });
+                    }
+
+                    // Reload để cập nhật thông tin
+                    location.reload();
+                } else {
+                    alert(response.message);
+                    $(selectElement).val(originalValue);
+                }
+            }).fail(function() {
+                alert('Lỗi kết nối');
+                $(selectElement).val(originalValue);
+            }).always(function() {
+                $(selectElement).prop('disabled', false);
+                $(selectElement).parent().find('.fa-spinner').remove();
+            });
+        }
+
+        function removeFromCart(cartId, buttonElement) {
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
+                $(buttonElement).html('<i class="fas fa-spinner fa-spin"></i> Đang xóa...');
+                $(buttonElement).prop('disabled', true);
+
+                $.post('@Url.Action("RemoveFromCart", "Cart")', {
+                    cartId: cartId
+                }, function(response) {
+                    if (response.success) {
+                        $('tr[data-cart-id="' + cartId + '"]').fadeOut(300, function() {
+                            $(this).remove();
+                            $('#cart-total-amount strong').text(response.totalAmount + ' đ');
+
+                            if ($('tbody tr').length === 0) {
+                                location.reload();
+                            }
+                        });
+
+                        if (typeof updateHeaderCartCount === 'function') {
+                            updateHeaderCartCount(response.cartCount);
+                        }
+                    } else {
+                        alert(response.message);
+                        $(buttonElement).html('<i class="fas fa-trash"></i> Xóa');
+                        $(buttonElement).prop('disabled', false);
+                    }
+                }).fail(function() {
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
+                    $(buttonElement).html('<i class="fas fa-trash"></i> Xóa');
+                    $(buttonElement).prop('disabled', false);
+                });
+            }
+        }
+
+        function updateHeaderCartCount(count) {
+            $('.cart-count').text(count);
+        }
+
+        $(document).ready(function() {
+            $('.variant-select').each(function() {
+                $(this).data('original-value', $(this).val());
+            });
+        });
+    </script>
+}
